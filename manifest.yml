@@ -1,0 +1,7 @@
+---
+applications:
+- name: credhub-java-sample
+  memory: 1G
+  random-route: true
+  path: build/libs/credhub-java-sample-0.1.0.jar
+

@@ -1,0 +1,48 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
+		classpath("io.spring.gradle:dependency-management-plugin:0.5.6.RELEASE")
+	}
+
+	ext {
+		lombokVersion = "1.16.16"
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'credhub-java-sample'
+	version = '0.1.0'
+}
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile("org.springframework.boot:spring-boot-starter-actuator")
+
+	compile("org.apache.httpcomponents:httpclient")
+	
+	compile("org.projectlombok:lombok:${lombokVersion}")
+
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+	testCompile("org.mockito:mockito-core:2.+")
+	testCompile("org.valid4j:json-path-matchers:1.1")
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = "3.4"
+}
