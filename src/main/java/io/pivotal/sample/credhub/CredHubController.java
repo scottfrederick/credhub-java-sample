@@ -20,7 +20,6 @@ public class CredHubController {
 	static final String TEST_SERVICE_NAME = "service-instance-name";
 	static final String TEST_BINDING_ID = "1111-1111-1111-1111";
 	static final String TEST_CREDENTIAL_NAME = "credentials-json";
-	static final ValueType TEST_VALUE_TYPE = ValueType.PASSWORD;
 
 	private RestTemplate restTemplate;
 

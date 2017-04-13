@@ -1,7 +1,5 @@
 package io.pivotal.sample.credhub;
 
-
-import io.pivotal.sample.credhub.client.CredHubProperties;
 import io.pivotal.sample.credhub.client.ReadRequest;
 import io.pivotal.sample.credhub.client.ValueType;
 import io.pivotal.sample.credhub.client.WriteRequest;
@@ -21,9 +19,6 @@ import static io.pivotal.sample.credhub.CredHubController.TEST_BINDING_ID;
 import static io.pivotal.sample.credhub.CredHubController.TEST_BROKER_NAME;
 import static io.pivotal.sample.credhub.CredHubController.TEST_CREDENTIAL_NAME;
 import static io.pivotal.sample.credhub.CredHubController.TEST_SERVICE_NAME;
-import static io.pivotal.sample.credhub.CredHubController.TEST_VALUE_TYPE;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -41,18 +36,8 @@ public class CredHubControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Autowired
-	private CredHubProperties credHubProperties;
-
 	@MockBean
 	private RestTemplate restTemplate;
-
-	@Test
-	public void propertiesPopulated() {
-		assertThat(credHubProperties.getApi(), equalTo("https://credhub.cf.example.com:8844"));
-		assertThat(credHubProperties.getInstanceCert(), equalTo("/etc/cf-instance-credentials/instance.crt"));
-		assertThat(credHubProperties.getInstanceKey(), equalTo("/etc/cf-instance-credentials/instance.key"));
-	}
 
 	@Test
 	public void readSucceeds() throws Exception {

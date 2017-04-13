@@ -6,52 +6,40 @@ import java.net.URI;
 
 public class CredHubProperties {
 	@Value("${CREDHUB_API}")
-	private String api;
+	private String apiUrlBase;
 
 	@Value("${CF_INSTANCE_CERT}")
-	private String instanceCert;
+	private String instanceCertLocation;
 
 	@Value("${CF_INSTANCE_KEY}")
-	private String instanceKey;
+	private String instanceKeyLocation;
 
 	public CredHubProperties() {
 	}
 
-	public CredHubProperties(String api, String instanceCert, String instanceKey) {
-		this.api = api;
-		this.instanceCert = instanceCert;
-		this.instanceKey = instanceKey;
+	public CredHubProperties(String apiUrlBase, String instanceCertLocation, String instanceKeyLocation) {
+		this.apiUrlBase = apiUrlBase;
+		this.instanceCertLocation = instanceCertLocation;
+		this.instanceKeyLocation = instanceKeyLocation;
 	}
 
-	public String getApi() {
-		return api;
+	public String getApiUrlBase() {
+		return apiUrlBase;
 	}
 
 	public URI getApiUri() {
 		try {
-			return new URI(api);
+			return new URI(apiUrlBase);
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Invalid CredHub API URI '" + api + "'", e);
+			throw new IllegalArgumentException("Invalid CredHub API URI '" + apiUrlBase + "'", e);
 		}
 	}
 
-	public void setApi(String api) {
-		this.api = api;
+	public String getInstanceCertLocation() {
+		return instanceCertLocation;
 	}
 
-	public String getInstanceCert() {
-		return instanceCert;
-	}
-
-	public void setInstanceCert(String instanceCert) {
-		this.instanceCert = instanceCert;
-	}
-
-	public String getInstanceKey() {
-		return instanceKey;
-	}
-
-	public void setInstanceKey(String instanceKey) {
-		this.instanceKey = instanceKey;
+	public String getInstanceKeyLocation() {
+		return instanceKeyLocation;
 	}
 }

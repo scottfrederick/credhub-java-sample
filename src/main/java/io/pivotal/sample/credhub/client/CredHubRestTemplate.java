@@ -15,35 +15,36 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.net.ssl.SSLContext;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import java.util.List;
 
 public class CredHubRestTemplate extends RestTemplate {
-	public CredHubRestTemplate(CredHubProperties properties) {
+
+	public CredHubRestTemplate(URI baseUri, KeyStoreBuilder keyStoreBuilder) {
+		addInterceptor(baseUri);
+		setRequestFactory(keyStoreBuilder);
+	}
+
+	private void addInterceptor(URI baseUri) {
 		List<ClientHttpRequestInterceptor> interceptors = getInterceptors();
+		interceptors.add(new CredHubRestTemplateInterceptor(baseUri));
+		setInterceptors(interceptors);
+	}
 
-		interceptors.add(new CredHubRestTemplateInterceptor(properties.getApiUri()));
-		this.setInterceptors(interceptors);
-
-		HttpClient httpClient = buildHttpClient(properties);
+	private void setRequestFactory(KeyStoreBuilder keyStoreBuilder) {
+		HttpClient httpClient = buildHttpClient(keyStoreBuilder);
 		setRequestFactory(new HttpComponentsClientHttpRequestFactory(httpClient));
 	}
 
-	private HttpClient buildHttpClient(CredHubProperties properties) {
+	private HttpClient buildHttpClient(KeyStoreBuilder keyStoreBuilder) {
 		try {
-			char[] keyPassword = "keystore".toCharArray();
-
-			KeyStore clientCert = getPKSC12KeyStore(keyPassword);
+			KeyStore keyStore = keyStoreBuilder.buildKeyStore();
 
 			SSLContext sslcontext = SSLContexts.custom()
-					.loadTrustMaterial(clientCert, new TrustSelfSignedStrategy())
-					.loadKeyMaterial(clientCert, keyPassword)
+					.loadTrustMaterial(keyStore, new TrustSelfSignedStrategy())
+					.loadKeyMaterial(keyStore, keyStoreBuilder.getKeyPassword())
 					.build();
 
 			SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
@@ -56,18 +57,6 @@ public class CredHubRestTemplate extends RestTemplate {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	private KeyStore getPKSC12KeyStore(char[] keyPassword) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
-		KeyStore clientCert = KeyStore.getInstance("PKCS12");
-		clientCert.load(new FileInputStream("/Users/sfrederick/Projects/spring-samples/credhub/instance.p12"), keyPassword);
-		return clientCert;
-	}
-
-	private KeyStore getJKSKeyStore(CredHubProperties properties) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
-		KeyStore clientCert = KeyStore.getInstance("JKS");
-		clientCert.load(new FileInputStream(properties.getInstanceCert()), "keystore".toCharArray());
-		return clientCert;
 	}
 
 	public static class CredHubRestTemplateInterceptor implements ClientHttpRequestInterceptor {

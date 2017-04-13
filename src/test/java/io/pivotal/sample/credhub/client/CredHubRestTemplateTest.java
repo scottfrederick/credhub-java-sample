@@ -21,12 +21,13 @@ public class CredHubRestTemplateTest {
 	@Mock
 	private ClientHttpRequestExecution execution;
 
+	@Mock
+	private KeyStoreBuilder keyStoreBuilder;
+
 	@Test
-	public void restTemplateIsConfigured() {
-		CredHubProperties properties = new CredHubProperties("https://credhub.cf.example.com:8844",
-				"/etc/cf-instance-credentials/instance.crt",
-				"/etc/cf-instance-credentials/instance.key");
-		CredHubRestTemplate restTemplate = new CredHubRestTemplate(properties);
+	public void restTemplateIsConfigured() throws Exception {
+		CredHubRestTemplate restTemplate =
+				new CredHubRestTemplate(new URI("https://credhub.cf.example.com:8844"), keyStoreBuilder);
 
 		assertThat(restTemplate.getInterceptors().size(), equalTo(1));
 		assertThat(restTemplate.getInterceptors().get(0), instanceOf(CredHubRestTemplateInterceptor.class));
