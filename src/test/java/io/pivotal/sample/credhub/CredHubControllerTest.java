@@ -1,5 +1,6 @@
 package io.pivotal.sample.credhub;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.pivotal.sample.credhub.client.ReadRequest;
 import io.pivotal.sample.credhub.client.ValueType;
 import io.pivotal.sample.credhub.client.WriteRequest;
@@ -15,10 +16,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 
-import static io.pivotal.sample.credhub.CredHubController.TEST_BINDING_ID;
-import static io.pivotal.sample.credhub.CredHubController.TEST_BROKER_NAME;
-import static io.pivotal.sample.credhub.CredHubController.TEST_CREDENTIAL_NAME;
-import static io.pivotal.sample.credhub.CredHubController.TEST_SERVICE_NAME;
+import static io.pivotal.sample.credhub.CredHubController.DEFAULT_BINDING_ID;
+import static io.pivotal.sample.credhub.CredHubController.DEFAULT_BROKER_NAME;
+import static io.pivotal.sample.credhub.CredHubController.DEFAULT_CREDENTIAL_NAME;
+import static io.pivotal.sample.credhub.CredHubController.DEFAULT_SERVICE_NAME;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -47,10 +48,10 @@ public class CredHubControllerTest {
 				.andExpect(status().isOk());
 
 		ReadRequest request = ReadRequest.builder()
-				.serviceBrokerName(TEST_BROKER_NAME)
-				.serviceOfferingName(TEST_SERVICE_NAME)
-				.serviceBindingId(TEST_BINDING_ID)
-				.credentialName(TEST_CREDENTIAL_NAME)
+				.serviceBrokerName(DEFAULT_BROKER_NAME)
+				.serviceOfferingName(DEFAULT_SERVICE_NAME)
+				.serviceBindingId(DEFAULT_BINDING_ID)
+				.credentialName(DEFAULT_CREDENTIAL_NAME)
 				.build();
 
 		verify(restTemplate).getForObject("/api/v1/data?name={name}", String.class, request.getName());
@@ -65,10 +66,10 @@ public class CredHubControllerTest {
 
 		verify(restTemplate).put("/api/v1/data",
 				WriteRequest.builder()
-						.serviceBrokerName(TEST_BROKER_NAME)
-						.serviceOfferingName(TEST_SERVICE_NAME)
-						.serviceBindingId(TEST_BINDING_ID)
-						.credentialName(TEST_CREDENTIAL_NAME)
+						.serviceBrokerName(DEFAULT_BROKER_NAME)
+						.serviceOfferingName(DEFAULT_SERVICE_NAME)
+						.serviceBindingId(DEFAULT_BINDING_ID)
+						.credentialName(DEFAULT_CREDENTIAL_NAME)
 						.valueType(ValueType.PASSWORD)
 						.value("secret")
 						.build()
@@ -77,23 +78,27 @@ public class CredHubControllerTest {
 
 	@Test
 	public void writeWithJsonSucceeds() throws Exception {
+		HashMap<String, Object> value = new HashMap<String, Object>() {{
+			put("uri", "http://example.com");
+			put("client_id", "id");
+			put("client_secret", "secret");
+		}};
+		ObjectMapper mapper = new ObjectMapper();
+		String stringValue = mapper.writeValueAsString(value);
+
 		mockMvc
-				.perform(put("/write").content("data").contentType("application/json"))
+				.perform(put("/write").content(stringValue).contentType("application/json"))
 				.andDo(print())
 				.andExpect(status().isOk());
 
 		verify(restTemplate).put("/api/v1/data",
 				WriteRequest.builder()
-						.serviceBrokerName(TEST_BROKER_NAME)
-						.serviceOfferingName(TEST_SERVICE_NAME)
-						.serviceBindingId(TEST_BINDING_ID)
-						.credentialName(TEST_CREDENTIAL_NAME)
+						.serviceBrokerName(DEFAULT_BROKER_NAME)
+						.serviceOfferingName(DEFAULT_SERVICE_NAME)
+						.serviceBindingId(DEFAULT_BINDING_ID)
+						.credentialName(DEFAULT_CREDENTIAL_NAME)
 						.valueType(ValueType.JSON)
-						.value(new HashMap<String, Object>() {{
-							put("uri", "http://example.com");
-							put("client_id", "id");
-							put("client_secret", "secret");
-						}})
+						.value(value)
 						.build()
 		);
 	}
