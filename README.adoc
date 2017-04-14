@@ -9,7 +9,6 @@ This application implements a simple REST API that writes and reads credentials 
 ----
 $ ./gradlew clean assemble
 ----
-+
 
 
 == Deploy to Pivotal Cloud Foundry
@@ -27,15 +26,12 @@ The application implements a `/write` and a `/read` endpoint that can be called 
 === Write JSON credentials to CredHub
 
 Write JSON credentials to CredHub with the default credential name:
-
-+
 ----
 $ curl -X PUT http://credhub-java-sample.cf.example.com/write -H "Content-type: application/json" -d @credentials.json
 ----
 
-where `credentials.json` is a local file containing JSON-formatted credentials like this:
 
-+
+where `credentials.json` is a local file containing JSON-formatted credentials like this:
 ----
 {
   "client_id": "test-id",
@@ -44,11 +40,10 @@ where `credentials.json` is a local file containing JSON-formatted credentials l
 }
 ----
 
+
 === Write password credentials to CredHub
 
 Write password credentials to CredHub with the default credential name:
-
-+
 ----
 $ curl -X PUT http://credhub-java-sample.cf.example.com/write -H "Content-type: text/plain" -d 'password'
 ----
@@ -56,8 +51,6 @@ $ curl -X PUT http://credhub-java-sample.cf.example.com/write -H "Content-type: 
 === Read credentials from CredHub
 
 Read stored credentials from CredHub with the default credential name:
-
-+
 ----
 $ curl -X PUT http://credhub-java-sample.cf.example.com/read -H "Content-type: application/json"
 ----
