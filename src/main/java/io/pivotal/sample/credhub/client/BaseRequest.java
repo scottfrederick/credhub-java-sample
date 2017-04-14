@@ -10,7 +10,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class CredHubRequest {
+public class BaseRequest {
 	private String serviceBrokerName;
 	private String serviceOfferingName;
 	private String serviceBindingId;

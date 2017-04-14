@@ -43,7 +43,7 @@ public class WriteRequestSerializationTest {
 	public void serializationWithJson() throws Exception {
 		WriteRequest request = requestBuilder
 				.credentialName("credentials")
-				.valueType(WriteRequest.ValueType.JSON)
+				.valueType(ValueType.JSON)
 				.value(new HashMap<String, Object>() {{
 					put("data", "value");
 					put("test", true);
@@ -70,7 +70,7 @@ public class WriteRequestSerializationTest {
 		WriteRequest request = requestBuilder
 				.overwrite(true)
 				.credentialName("password")
-				.valueType(WriteRequest.ValueType.PASSWORD)
+				.valueType(ValueType.PASSWORD)
 				.value("secret")
 				.build();
 
@@ -92,7 +92,7 @@ public class WriteRequestSerializationTest {
 	public void serializationWithOneAccessControl() throws Exception {
 		WriteRequest request = requestBuilder
 				.credentialName("password")
-				.valueType(WriteRequest.ValueType.PASSWORD)
+				.valueType(ValueType.PASSWORD)
 				.value("secret")
 				.accessControlEntry(AccessControlEntry.builder()
 						.app("app-id")
@@ -114,7 +114,7 @@ public class WriteRequestSerializationTest {
 	public void serializationWithTwoAccessControls() throws Exception {
 		WriteRequest request = requestBuilder
 				.credentialName("password")
-				.valueType(WriteRequest.ValueType.PASSWORD)
+				.valueType(ValueType.PASSWORD)
 				.value("secret")
 				.accessControlEntry(AccessControlEntry.builder()
 						.app("app1-id")

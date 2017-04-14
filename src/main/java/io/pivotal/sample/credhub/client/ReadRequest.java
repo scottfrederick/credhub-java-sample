@@ -6,7 +6,7 @@ import lombok.ToString;
 
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class ReadRequest extends CredHubRequest {
+public class ReadRequest extends BaseRequest {
 	@Builder
 	public ReadRequest(String serviceBrokerName, String serviceOfferingName, String serviceBindingId, String credentialName) {
 		super(serviceBrokerName, serviceOfferingName, serviceBindingId, credentialName);

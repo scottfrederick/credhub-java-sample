@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class WriteRequest extends CredHubRequest {
+public class WriteRequest extends BaseRequest {
 	@Getter
 	private boolean overwrite;
 
@@ -45,18 +45,4 @@ public class WriteRequest extends CredHubRequest {
 		return valueType.type();
 	}
 
-	public enum ValueType {
-		PASSWORD("password"),
-		JSON("json");
-
-		private final String type;
-
-		ValueType(String type) {
-			this.type = type;
-		}
-
-		public String type() {
-			return type;
-		}
-	}
 }
