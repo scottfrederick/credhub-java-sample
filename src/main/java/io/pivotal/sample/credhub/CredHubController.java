@@ -26,9 +26,9 @@ import static io.pivotal.sample.credhub.client.AccessControlEntry.Operation.READ
 @RestController
 public class CredHubController {
 	static final String DEFAULT_BROKER_NAME = "service-broker-name";
-	static final String DEFAULT_SERVICE_NAME = "service-instance-name";
+	static final String DEFAULT_SERVICE_NAME = "service-offering-name";
 	static final String DEFAULT_BINDING_ID = "1111-1111-1111-1111";
-	static final String DEFAULT_CREDENTIAL_NAME = "credentials-json";
+	static final String DEFAULT_CREDENTIAL_NAME = "credential";
 
 	@Value("${vcap.application.application_id:}")
 	private String appId;

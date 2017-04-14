@@ -1,0 +1,68 @@
+= CredHub Java Sample
+
+This application implements a simple REST API that writes and reads credentials to and from CredHub. 
+
+== Build
+
+. Using Gradle, build and package the application:
++
+----
+$ ./gradlew clean assemble
+----
++
+
+== Deploy to Pivotal Cloud Foundry
+
+. Push the app to a Cloud Foundry that has CredHub installed:
++
+----
+$ cf push
+----
+
+== Test the application
+
+The application implements a `/write` and a `/read` endpoint that can be called as REST APIs. The app will default the credential name to `/c/service-broker-name/service-offering-name/1111-1111-1111-1111/credential`, or the credential name can be customized with request parameters.
+
+=== Write JSON credentials to CredHub
+
+Write JSON credentials to CredHub with the default credential name:
+
++
+----
+$ curl -X PUT http://credhub-java-sample.cf.example.com/write -H "Content-type: application/json" -d @credentials.json
+----
+
+where `credentials.json` is a local file containing JSON-formatted credentials like this:
+
++
+----
+{
+  "client_id": "test-id",
+  "client_secret": "test-secret",
+  "uri": "https://example.com"
+}
+----
+
+=== Write password credentials to CredHub
+
+Write password credentials to CredHub with the default credential name:
+
++
+----
+$ curl -X PUT http://credhub-java-sample.cf.example.com/write -H "Content-type: text/plain" -d 'password'
+----
+
+=== Read credentials from CredHub
+
+Read stored credentials from CredHub with the default credential name:
+
++
+----
+$ curl -X PUT http://credhub-java-sample.cf.example.com/read -H "Content-type: application/json"
+----
+
+=== Specify elements of the credential name
+
+To use a credential name other than the default, provide request parameters to the `/write` or `/read` request as in this example URL:
+
+`http://credhub-java-sample.cf.example.com/write?serviceBrokerName=test-broker-name&serviceOfferingName=test-service-name&bindingId=2222-2222&credentialName=mycreds`
