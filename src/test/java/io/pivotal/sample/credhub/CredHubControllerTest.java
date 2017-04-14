@@ -2,7 +2,6 @@ package io.pivotal.sample.credhub;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.pivotal.sample.credhub.client.ReadRequest;
-import io.pivotal.sample.credhub.client.ValueType;
 import io.pivotal.sample.credhub.client.WriteRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,7 +69,7 @@ public class CredHubControllerTest {
 						.serviceOfferingName(DEFAULT_SERVICE_NAME)
 						.serviceBindingId(DEFAULT_BINDING_ID)
 						.credentialName(DEFAULT_CREDENTIAL_NAME)
-						.valueType(ValueType.PASSWORD)
+						.valueType(WriteRequest.ValueType.PASSWORD)
 						.value("secret")
 						.build()
 		);
@@ -97,7 +96,7 @@ public class CredHubControllerTest {
 						.serviceOfferingName(DEFAULT_SERVICE_NAME)
 						.serviceBindingId(DEFAULT_BINDING_ID)
 						.credentialName(DEFAULT_CREDENTIAL_NAME)
-						.valueType(ValueType.JSON)
+						.valueType(WriteRequest.ValueType.JSON)
 						.value(value)
 						.build()
 		);

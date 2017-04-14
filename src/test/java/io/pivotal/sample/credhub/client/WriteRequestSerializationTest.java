@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
+import static io.pivotal.sample.credhub.client.AccessControlEntry.Operation.READ;
+import static io.pivotal.sample.credhub.client.AccessControlEntry.Operation.WRITE;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -41,7 +43,7 @@ public class WriteRequestSerializationTest {
 	public void serializationWithJson() throws Exception {
 		WriteRequest request = requestBuilder
 				.credentialName("credentials")
-				.valueType(ValueType.JSON)
+				.valueType(WriteRequest.ValueType.JSON)
 				.value(new HashMap<String, Object>() {{
 					put("data", "value");
 					put("test", true);
@@ -68,7 +70,7 @@ public class WriteRequestSerializationTest {
 		WriteRequest request = requestBuilder
 				.overwrite(true)
 				.credentialName("password")
-				.valueType(ValueType.PASSWORD)
+				.valueType(WriteRequest.ValueType.PASSWORD)
 				.value("secret")
 				.build();
 
@@ -90,11 +92,11 @@ public class WriteRequestSerializationTest {
 	public void serializationWithOneAccessControl() throws Exception {
 		WriteRequest request = requestBuilder
 				.credentialName("password")
-				.valueType(ValueType.PASSWORD)
+				.valueType(WriteRequest.ValueType.PASSWORD)
 				.value("secret")
 				.accessControlEntry(AccessControlEntry.builder()
-						.actor("mtls-app:app-id")
-						.operation("read")
+						.app("app-id")
+						.operation(READ)
 						.build())
 				.build();
 
@@ -112,17 +114,17 @@ public class WriteRequestSerializationTest {
 	public void serializationWithTwoAccessControls() throws Exception {
 		WriteRequest request = requestBuilder
 				.credentialName("password")
-				.valueType(ValueType.PASSWORD)
+				.valueType(WriteRequest.ValueType.PASSWORD)
 				.value("secret")
 				.accessControlEntry(AccessControlEntry.builder()
-						.actor("mtls-app:app1-id")
-						.operation("read")
-						.operation("write")
+						.app("app1-id")
+						.operation(READ)
+						.operation(WRITE)
 						.build())
 				.accessControlEntry(AccessControlEntry.builder()
-						.actor("mtls-app:app2-id")
-						.operation("write")
-						.operation("read")
+						.app("app2-id")
+						.operation(WRITE)
+						.operation(READ)
 						.build())
 				.build();
 

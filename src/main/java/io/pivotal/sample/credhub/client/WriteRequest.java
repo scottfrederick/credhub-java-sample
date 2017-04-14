@@ -42,6 +42,21 @@ public class WriteRequest extends CredHubRequest {
 	}
 
 	public String getType() {
-		return valueType.toString();
+		return valueType.type();
+	}
+
+	public enum ValueType {
+		PASSWORD("password"),
+		JSON("json");
+
+		private final String type;
+
+		ValueType(String type) {
+			this.type = type;
+		}
+
+		public String type() {
+			return type;
+		}
 	}
 }
