@@ -52,7 +52,7 @@ $ curl -X PUT http://credhub-java-sample.cf.example.com/write -H "Content-type: 
 
 Read stored credentials from CredHub with the default credential name:
 ----
-$ curl -X PUT http://credhub-java-sample.cf.example.com/read -H "Content-type: application/json"
+$ curl -X GET http://credhub-java-sample.cf.example.com/read -H "Content-type: application/json"
 ----
 
 === Specify elements of the credential name
